@@ -4,7 +4,7 @@ import { useState } from 'react';
 import useSWR from 'swr';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Search, ShoppingCart, Menu, X, Star, Facebook, Youtube, Phone, Mail } from 'lucide-react';
+import { Search, ShoppingCart, Menu, X, Star, Facebook, Youtube, Phone, Mail, Sparkles, TrendingUp } from 'lucide-react';
 
 interface Product {
   id: string;
@@ -22,30 +22,33 @@ function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
-    <header className="bg-white shadow-md sticky top-0 z-50">
+    <header className="bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 shadow-lg sticky top-0 z-50 border-b border-cyan-500/20">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
-          <Link href="/" className="text-xl font-bold text-blue-600">Daily Income Bazar</Link>
-          <nav className="hidden md:flex items-center gap-6">
-            <Link href="/" className="text-slate-700 hover:text-blue-600">হোম</Link>
-            <Link href="/about" className="text-slate-700 hover:text-blue-600">আমাদের সম্পর্কে</Link>
-            <Link href="/contact" className="text-slate-700 hover:text-blue-600">যোগাযোগ</Link>
+          <Link href="/" className="text-2xl font-bold bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent flex items-center gap-2">
+            <Sparkles className="h-6 w-6 text-cyan-400" />
+            Daily Income Bazar
+          </Link>
+          <nav className="hidden md:flex items-center gap-8">
+            <Link href="/" className="text-slate-300 hover:text-cyan-400 transition-colors">হোম</Link>
+            <Link href="/about" className="text-slate-300 hover:text-cyan-400 transition-colors">আমাদের সম্পর্কে</Link>
+            <Link href="/contact" className="text-slate-300 hover:text-cyan-400 transition-colors">যোগাযোগ</Link>
           </nav>
           <div className="flex items-center gap-4">
-            <Link href="/cart" className="relative">
-              <ShoppingCart className="h-6 w-6 text-slate-700" />
+            <Link href="/cart" className="relative group">
+              <ShoppingCart className="h-6 w-6 text-slate-300 group-hover:text-cyan-400 transition-colors" />
             </Link>
-            <Link href="/auth/login" className="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-blue-700">লগইন</Link>
+            <Link href="/auth/login" className="bg-gradient-to-r from-cyan-500 to-blue-600 text-white px-4 py-2 rounded-lg text-sm hover:shadow-lg hover:shadow-cyan-500/50 transition-all">লগইন</Link>
             <button className="md:hidden" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
-              {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+              {mobileMenuOpen ? <X className="h-6 w-6 text-cyan-400" /> : <Menu className="h-6 w-6 text-cyan-400" />}
             </button>
           </div>
         </div>
         {mobileMenuOpen && (
-          <nav className="md:hidden py-4 border-t flex flex-col gap-4">
-            <Link href="/" className="text-slate-700">হোম</Link>
-            <Link href="/about" className="text-slate-700">আমাদের সম্পর্কে</Link>
-            <Link href="/contact" className="text-slate-700">যোগাযোগ</Link>
+          <nav className="md:hidden py-4 border-t border-cyan-500/20 flex flex-col gap-4">
+            <Link href="/" className="text-slate-300 hover:text-cyan-400">হোম</Link>
+            <Link href="/about" className="text-slate-300 hover:text-cyan-400">আমাদের সম্পর্কে</Link>
+            <Link href="/contact" className="text-slate-300 hover:text-cyan-400">যোগাযোগ</Link>
           </nav>
         )}
       </div>
@@ -55,37 +58,37 @@ function Header() {
 
 function Footer() {
   return (
-    <footer className="bg-slate-900 text-white py-12">
+    <footer className="bg-gradient-to-b from-slate-900 to-slate-950 text-white py-12 border-t border-cyan-500/20">
       <div className="container mx-auto px-4">
         <div className="grid md:grid-cols-4 gap-8 mb-8">
           <div>
-            <h3 className="text-xl font-bold mb-4">Daily Income Bazar</h3>
+            <h3 className="text-xl font-bold bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent mb-4">Daily Income Bazar</h3>
             <p className="text-slate-400">প্রিমিয়াম পণ্য এবং আজীবন আয়ের সুযোগ</p>
           </div>
           <div>
-            <h4 className="font-semibold mb-4">লিঙ্ক</h4>
+            <h4 className="font-semibold text-cyan-400 mb-4">লিঙ্ক</h4>
             <div className="flex flex-col gap-2">
-              <Link href="/about" className="text-slate-400 hover:text-white">আমাদের সম্পর্কে</Link>
-              <Link href="/contact" className="text-slate-400 hover:text-white">যোগাযোগ</Link>
+              <Link href="/about" className="text-slate-400 hover:text-cyan-300 transition-colors">আমাদের সম্পর্কে</Link>
+              <Link href="/contact" className="text-slate-400 hover:text-cyan-300 transition-colors">যোগাযোগ</Link>
             </div>
           </div>
           <div>
-            <h4 className="font-semibold mb-4">যোগাযোগ</h4>
+            <h4 className="font-semibold text-cyan-400 mb-4">যোগাযোগ</h4>
             <div className="flex flex-col gap-2 text-slate-400">
-              <span className="flex items-center gap-2"><Phone className="h-4 w-4" /> +880 1700-000000</span>
-              <span className="flex items-center gap-2"><Mail className="h-4 w-4" /> support@dib.com</span>
+              <span className="flex items-center gap-2"><Phone className="h-4 w-4 text-cyan-400" /> +880 1700-000000</span>
+              <span className="flex items-center gap-2"><Mail className="h-4 w-4 text-cyan-400" /> support@dib.com</span>
             </div>
           </div>
           <div>
-            <h4 className="font-semibold mb-4">সামাজিক মাধ্যম</h4>
+            <h4 className="font-semibold text-cyan-400 mb-4">সামাজিক মাধ্যম</h4>
             <div className="flex gap-4">
-              <a href="#" className="text-slate-400 hover:text-white"><Facebook className="h-6 w-6" /></a>
-              <a href="#" className="text-slate-400 hover:text-white"><Youtube className="h-6 w-6" /></a>
+              <a href="#" className="text-slate-400 hover:text-cyan-400 transition-colors"><Facebook className="h-6 w-6" /></a>
+              <a href="#" className="text-slate-400 hover:text-cyan-400 transition-colors"><Youtube className="h-6 w-6" /></a>
             </div>
           </div>
         </div>
-        <div className="border-t border-slate-800 pt-8 text-center text-slate-400">
-          <p>&copy; {new Date().getFullYear()} Daily Income Bazar. All rights reserved.</p>
+        <div className="border-t border-slate-800 pt-8 text-center text-slate-500">
+          <p>&copy; {new Date().getFullYear()} Daily Income Bazar. সকল অধিকার সংরক্ষিত।</p>
         </div>
       </div>
     </footer>
@@ -97,30 +100,30 @@ function ProductCard({ product }: { product: Product }) {
   const discount = product.price > displayPrice ? Math.round(((product.price - displayPrice) / product.price) * 100) : 0;
 
   return (
-    <div className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow overflow-hidden">
-      <div className="relative bg-slate-100 h-48">
+    <div className="bg-gradient-to-br from-slate-800 to-slate-900 rounded-xl shadow-lg hover:shadow-cyan-500/30 hover:shadow-2xl transition-all duration-300 overflow-hidden group border border-slate-700 hover:border-cyan-500/50">
+      <div className="relative bg-slate-950 h-48 overflow-hidden">
         {product.img ? (
-          <Image src={product.img} alt={product.name} fill className="object-cover" />
+          <Image src={product.img} alt={product.name} fill className="object-cover group-hover:scale-110 transition-transform duration-300" />
         ) : (
-          <div className="w-full h-full flex items-center justify-center text-slate-400">No Image</div>
+          <div className="w-full h-full flex items-center justify-center text-slate-600">কোনো ছবি নেই</div>
         )}
         {discount > 0 && (
-          <div className="absolute top-2 right-2 bg-red-500 text-white px-2 py-1 rounded text-sm">-{discount}%</div>
+          <div className="absolute top-3 right-3 bg-gradient-to-r from-red-500 to-pink-600 text-white px-3 py-1 rounded-full text-sm font-semibold">-{discount}%</div>
         )}
       </div>
       <div className="p-4">
         <Link href={`/products/${product.id}`}>
-          <h3 className="font-semibold text-slate-900 hover:text-blue-600 line-clamp-2 mb-2">{product.name}</h3>
+          <h3 className="font-semibold text-slate-100 group-hover:text-cyan-400 transition-colors line-clamp-2 mb-2">{product.name}</h3>
         </Link>
-        <div className="flex text-yellow-400 mb-2">
+        <div className="flex text-amber-400 mb-2">
           {[...Array(5)].map((_, i) => <Star key={i} className="h-4 w-4 fill-current" />)}
         </div>
         <div className="flex items-baseline gap-2 mb-2">
-          <span className="text-xl font-bold">&#2547;{displayPrice}</span>
-          {discount > 0 && <span className="text-sm text-slate-500 line-through">&#2547;{product.price}</span>}
+          <span className="text-xl font-bold text-cyan-400">৳{displayPrice}</span>
+          {discount > 0 && <span className="text-sm text-slate-500 line-through">৳{product.price}</span>}
         </div>
-        <p className="text-sm text-green-600 mb-3">{product.rp} পয়েন্ট</p>
-        <Link href={`/products/${product.id}`} className="block w-full bg-blue-600 text-white text-center py-2 rounded-lg hover:bg-blue-700">
+        <p className="text-sm text-emerald-400 mb-3 flex items-center gap-1"><TrendingUp className="h-3 w-3" /> {product.rp} পয়েন্ট</p>
+        <Link href={`/products/${product.id}`} className="block w-full bg-gradient-to-r from-cyan-500 to-blue-600 text-white text-center py-2 rounded-lg hover:shadow-lg hover:shadow-cyan-500/50 transition-all font-semibold">
           <ShoppingCart className="h-4 w-4 inline mr-2" /> বিস্তারিত দেখুন
         </Link>
       </div>
@@ -144,19 +147,23 @@ export default function HomePage() {
   return (
     <>
       <Header />
-      <main className="min-h-screen bg-white">
-        <section className="bg-gradient-to-r from-blue-600 to-blue-800 text-white py-16 md:py-24">
-          <div className="container mx-auto px-4">
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">Daily Income Bazar</h1>
-            <p className="text-lg md:text-xl text-blue-100 mb-8">প্রিমিয়াম পণ্য এবং আজীবন আয়ের সুযোগ</p>
-            <div className="flex gap-4">
-              <a href="#products" className="bg-white text-blue-600 px-6 py-3 rounded-lg font-semibold hover:bg-blue-50">কেনাকাটা করুন</a>
-              <Link href="/about" className="border border-white text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700">আমাদের সম্পর্কে</Link>
+      <main className="min-h-screen bg-gradient-to-b from-slate-900 via-slate-950 to-slate-900">
+        <section className="bg-gradient-to-br from-slate-800 via-slate-900 to-slate-950 text-white py-20 md:py-32 relative overflow-hidden border-b border-cyan-500/20">
+          <div className="absolute inset-0 opacity-10">
+            <div className="absolute top-0 left-1/4 w-96 h-96 bg-cyan-500 rounded-full blur-3xl"></div>
+            <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-blue-500 rounded-full blur-3xl"></div>
+          </div>
+          <div className="container mx-auto px-4 relative z-10">
+            <h1 className="text-5xl md:text-6xl font-bold mb-4 bg-gradient-to-r from-cyan-400 via-blue-400 to-cyan-300 bg-clip-text text-transparent">Daily Income Bazar</h1>
+            <p className="text-lg md:text-2xl text-slate-300 mb-8 max-w-2xl">প্রিমিয়াম পণ্য এবং আজীবন আয়ের সুযোগ একসাথে পান</p>
+            <div className="flex flex-col sm:flex-row gap-4">
+              <a href="#products" className="bg-gradient-to-r from-cyan-500 to-blue-600 text-white px-8 py-3 rounded-lg font-semibold hover:shadow-lg hover:shadow-cyan-500/50 transition-all">কেনাকাটা শুরু করুন</a>
+              <Link href="/about" className="border-2 border-cyan-400 text-cyan-400 px-8 py-3 rounded-lg font-semibold hover:bg-cyan-400/10 transition-all">আমাদের সম্পর্কে জানুন</Link>
             </div>
           </div>
         </section>
 
-        <section className="bg-white py-8 sticky top-16 z-10 shadow-sm">
+        <section className="bg-slate-900 py-6 sticky top-16 z-20 shadow-lg border-b border-cyan-500/20">
           <div className="container mx-auto px-4">
             <div className="flex flex-col md:flex-row gap-4 items-center justify-between">
               <div className="w-full md:flex-1 relative">
@@ -165,48 +172,47 @@ export default function HomePage() {
                   placeholder="পণ্য খুঁজুন..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full px-4 py-3 pl-12 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-4 py-3 pl-12 bg-slate-800 border border-slate-700 rounded-lg text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent"
                 />
-                <Search className="absolute left-4 top-3.5 h-5 w-5 text-gray-400" />
+                <Search className="absolute left-4 top-3.5 h-5 w-5 text-slate-500" />
               </div>
               <div className="flex gap-2 overflow-x-auto pb-2 md:pb-0 w-full md:w-auto">
-                <button onClick={() => setSelectedCategory('all')} className={`px-4 py-2 rounded-lg text-sm whitespace-nowrap ${selectedCategory === 'all' ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}>সব</button>
+                <button onClick={() => setSelectedCategory('all')} className={`px-4 py-2 rounded-lg text-sm whitespace-nowrap transition-all ${selectedCategory === 'all' ? 'bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-lg shadow-cyan-500/50' : 'bg-slate-800 text-slate-300 hover:bg-slate-700 border border-slate-700'}`}>সব</button>
                 {categories.map((cat: any) => (
-                  <button key={cat.id} onClick={() => setSelectedCategory(cat.id)} className={`px-4 py-2 rounded-lg text-sm whitespace-nowrap ${selectedCategory === cat.id ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}>{cat.name}</button>
+                  <button key={cat.id} onClick={() => setSelectedCategory(cat.id)} className={`px-4 py-2 rounded-lg text-sm whitespace-nowrap transition-all ${selectedCategory === cat.id ? 'bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-lg shadow-cyan-500/50' : 'bg-slate-800 text-slate-300 hover:bg-slate-700 border border-slate-700'}`}>{cat.name}</button>
                 ))}
               </div>
             </div>
           </div>
         </section>
 
-        <section id="products" className="py-12 md:py-16 bg-white">
+        <section id="products" className="py-16 md:py-20">
           <div className="container mx-auto px-4">
-            <h2 className="text-3xl font-bold mb-8">আমাদের পণ্য</h2>
+            <h2 className="text-4xl font-bold mb-12 bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">আমাদের পণ্য সংগ্রহ</h2>
             {isLoading ? (
-              <div className="text-center py-12"><div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div></div>
+              <div className="text-center py-20"><div className="inline-block animate-spin rounded-full h-12 w-12 border-4 border-slate-700 border-t-cyan-500"></div></div>
             ) : filteredProducts.length > 0 ? (
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                 {filteredProducts.map((product: Product) => <ProductCard key={product.id} product={product} />)}
               </div>
             ) : (
-              <div className="text-center py-12"><p className="text-gray-600 text-lg">কোনো পণ্য পাওয়া যায়নি</p></div>
+              <div className="text-center py-20"><p className="text-slate-400 text-lg">কোনো পণ্য পাওয়া যায়নি</p></div>
             )}
           </div>
         </section>
 
-        <section className="bg-gray-50 py-12 md:py-16">
+        <section className="bg-gradient-to-r from-slate-800 to-slate-900 py-16 md:py-20 border-y border-cyan-500/20">
           <div className="container mx-auto px-4">
-            <h2 className="text-3xl font-bold mb-12 text-center">কেন আমাদের বেছে নিবেন?</h2>
+            <h2 className="text-4xl font-bold mb-16 text-center bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">কেন আমাদের বেছে নিবেন?</h2>
             <div className="grid md:grid-cols-3 gap-8">
               {[
-                { title: 'সর্বোচ্চ মানের পণ্য', desc: 'প্রিমিয়াম এবং প্রমাণিত পণ্য সরাসরি আপনার দোরগোড়ায়' },
-                { title: 'স্থায়ী আয়', desc: 'MLM সিস্টেমের মাধ্যমে আপনার নেটওয়ার্ক থেকে আয় করুন' },
-                { title: 'নিরাপদ লেনদেন', desc: 'সম্পূর্ণ সুরক্ষিত পেমেন্ট এবং ক্যাশ সিস্টেম' },
+                { title: '✨ সর্বোচ্চ মানের পণ্য', desc: 'প্রিমিয়াম এবং প্রমাণিত পণ্য সরাসরি আপনার দোরগোড়ায়' },
+                { title: '💰 স্থায়ী আয়', desc: 'MLM সিস্টেমের মাধ্যমে আপনার নেটওয়ার্ক থেকে আয় করুন' },
+                { title: '🔒 নিরাপদ লেনদেন', desc: 'সম্পূর্ণ সুরক্ষিত পেমেন্ট এবং ক্যাশ সিস্টেম' },
               ].map((feature, i) => (
-                <div key={i} className="text-center">
-                  <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4"><span className="text-2xl text-blue-600">&#10003;</span></div>
-                  <h3 className="text-xl font-semibold mb-2">{feature.title}</h3>
-                  <p className="text-gray-600">{feature.desc}</p>
+                <div key={i} className="bg-slate-900 border border-slate-700 hover:border-cyan-500/50 p-8 rounded-xl transition-all hover:shadow-lg hover:shadow-cyan-500/20">
+                  <h3 className="text-xl font-semibold mb-3 text-cyan-400">{feature.title}</h3>
+                  <p className="text-slate-400">{feature.desc}</p>
                 </div>
               ))}
             </div>
