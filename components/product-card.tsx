@@ -36,8 +36,8 @@ export default function ProductCard({ product }: { product: Product }) {
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow overflow-hidden h-full flex flex-col">
-      <div className="relative bg-slate-100 h-48 overflow-hidden">
+    <div className="bg-card rounded-lg shadow-md hover:shadow-lg transition-shadow overflow-hidden h-full flex flex-col border">
+      <div className="relative bg-muted h-48 overflow-hidden">
         {product.img ? (
           <Image
             src={product.img}
@@ -46,12 +46,12 @@ export default function ProductCard({ product }: { product: Product }) {
             className="object-cover hover:scale-105 transition-transform"
           />
         ) : (
-          <div className="w-full h-full flex items-center justify-center text-slate-400">
+          <div className="w-full h-full flex items-center justify-center text-muted-foreground">
             No Image
           </div>
         )}
         {discount > 0 && (
-          <div className="absolute top-2 right-2 bg-red-500 text-white px-2 py-1 rounded text-sm font-semibold">
+          <div className="absolute top-2 right-2 bg-destructive text-destructive-foreground px-2 py-1 rounded text-sm font-semibold">
             -{discount}%
           </div>
         )}
@@ -59,7 +59,7 @@ export default function ProductCard({ product }: { product: Product }) {
 
       <div className="p-4 flex-1 flex flex-col">
         <Link href={`/products/${product.id}`}>
-          <h3 className="font-semibold text-slate-900 hover:text-blue-600 transition-colors line-clamp-2 mb-2">
+          <h3 className="font-semibold text-foreground hover:text-primary transition-colors line-clamp-2 mb-2">
             {product.name}
           </h3>
         </Link>
@@ -70,24 +70,24 @@ export default function ProductCard({ product }: { product: Product }) {
               <Star key={i} className="h-4 w-4 fill-current" />
             ))}
           </div>
-          <span className="text-sm text-slate-600">(42)</span>
+          <span className="text-sm text-muted-foreground">(42)</span>
         </div>
 
         <div className="mb-4 flex-1">
           <div className="flex items-baseline gap-2">
-            <span className="text-xl font-bold text-slate-900">৳{displayPrice}</span>
+            <span className="text-xl font-bold text-foreground">৳{displayPrice}</span>
             {discount > 0 && (
-              <span className="text-sm text-slate-500 line-through">৳{product.price}</span>
+              <span className="text-sm text-muted-foreground line-through">৳{product.price}</span>
             )}
           </div>
           <div className="text-sm text-green-600 mt-1">
-            💰 {product.rp} পয়েন্ট
+            {product.rp} points
           </div>
         </div>
 
         <Button onClick={handleAddToCart} size="sm" className="w-full">
           <ShoppingCart className="h-4 w-4 mr-2" />
-          কার্টে যোগ করুন
+          Add to Cart
         </Button>
       </div>
     </div>

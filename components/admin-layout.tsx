@@ -8,18 +8,18 @@ import { Button } from '@/components/ui/button';
 import { LogOut, Menu, X, BarChart3, Package, Users, Settings, CreditCard, Bell } from 'lucide-react';
 
 const adminMenuItems = [
-  { label: 'ড্যাশবোর্ড', href: '/admin/dashboard', icon: BarChart3 },
-  { label: 'পণ্য', href: '/admin/products', icon: Package },
-  { label: 'সদস্য', href: '/admin/members', icon: Users },
-  { label: 'অর্ডার', href: '/admin/orders', icon: CreditCard },
-  { label: 'উইথড্র', href: '/admin/withdrawals', icon: CreditCard },
-  { label: 'বিজ্ঞপ্তি', href: '/admin/notifications', icon: Bell },
-  { label: 'সেটিংস', href: '/admin/settings', icon: Settings },
+  { label: 'Dashboard', href: '/admin/dashboard', icon: BarChart3 },
+  { label: 'Products', href: '/admin/products', icon: Package },
+  { label: 'Members', href: '/admin/members', icon: Users },
+  { label: 'Orders', href: '/admin/orders', icon: CreditCard },
+  { label: 'Withdrawals', href: '/admin/withdrawals', icon: CreditCard },
+  { label: 'Notifications', href: '/admin/notifications', icon: Bell },
+  { label: 'Settings', href: '/admin/settings', icon: Settings },
 ];
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const router = useRouter();
-  const { user, loading } = useContext(AuthContext);
+  const { user, loading, signOut } = useContext(AuthContext);
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   useEffect(() => {
@@ -31,14 +31,13 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   if (loading || !user) {
     return (
       <div className="flex items-center justify-center min-h-screen">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
       </div>
     );
   }
 
   return (
-    <div className="flex h-screen bg-slate-100">
-      {/* Sidebar */}
+    <div className="flex h-screen bg-muted">
       <div
         className={`
         fixed md:relative md:w-64 w-64 bg-slate-900 text-white h-full transition-transform z-50
@@ -65,29 +64,26 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         </nav>
 
         <div className="absolute bottom-4 left-4 right-4">
-          <Button variant="outline" className="w-full text-slate-400">
+          <Button variant="outline" className="w-full text-slate-400" onClick={() => signOut()}>
             <LogOut className="h-4 w-4 mr-2" />
-            লগআউট
+            Logout
           </Button>
         </div>
       </div>
 
-      {/* Main Content */}
       <div className="flex-1 overflow-auto">
-        {/* Header */}
-        <div className="bg-white shadow-md p-4 flex items-center justify-between md:justify-end sticky top-0 z-40">
-          <button onClick={() => setSidebarOpen(!sidebarOpen)} className="md:hidden text-slate-600">
+        <div className="bg-background shadow-md p-4 flex items-center justify-between md:justify-end sticky top-0 z-40">
+          <button onClick={() => setSidebarOpen(!sidebarOpen)} className="md:hidden text-muted-foreground">
             {sidebarOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
           </button>
           <div className="flex items-center gap-4">
             <div className="text-right hidden sm:block">
-              <p className="font-semibold text-slate-900">এডমিন প্যানেল</p>
-              <p className="text-sm text-slate-600">{user?.email}</p>
+              <p className="font-semibold text-foreground">Admin Panel</p>
+              <p className="text-sm text-muted-foreground">{user?.email}</p>
             </div>
           </div>
         </div>
 
-        {/* Content */}
         <div className="p-6 max-w-7xl mx-auto">{children}</div>
       </div>
     </div>

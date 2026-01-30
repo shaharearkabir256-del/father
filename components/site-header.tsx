@@ -24,14 +24,12 @@ export default function SiteHeader() {
 
   const navLinks = [
     { href: "/", label: "Home" },
-    { href: "/products", label: "Products" },
     { href: "/about", label: "About Us" },
     { href: "/contact", label: "Contact" },
   ]
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      {/* Top bar */}
       <div className="hidden md:block bg-primary text-primary-foreground">
         <div className="container mx-auto px-4 py-2 flex items-center justify-between text-sm">
           <div className="flex items-center gap-6">
@@ -50,10 +48,8 @@ export default function SiteHeader() {
         </div>
       </div>
 
-      {/* Main header */}
       <div className="container mx-auto px-4">
         <div className="flex h-16 items-center justify-between gap-4">
-          {/* Logo */}
           <Link href="/" className="flex items-center gap-2">
             <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary text-primary-foreground font-bold text-xl">
               D
@@ -64,7 +60,6 @@ export default function SiteHeader() {
             </div>
           </Link>
 
-          {/* Search bar - Desktop */}
           <div className="hidden md:flex flex-1 max-w-xl mx-4">
             <div className="relative w-full">
               <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
@@ -78,7 +73,6 @@ export default function SiteHeader() {
             </div>
           </div>
 
-          {/* Desktop Navigation */}
           <nav className="hidden lg:flex items-center gap-6">
             {navLinks.map((link) => (
               <Link
@@ -91,9 +85,7 @@ export default function SiteHeader() {
             ))}
           </nav>
 
-          {/* Actions */}
           <div className="flex items-center gap-2">
-            {/* Cart */}
             <Link href="/cart">
               <Button variant="ghost" size="icon" className="relative">
                 <ShoppingCart className="h-5 w-5" />
@@ -106,7 +98,6 @@ export default function SiteHeader() {
               </Button>
             </Link>
 
-            {/* User menu */}
             {user ? (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
@@ -122,7 +113,7 @@ export default function SiteHeader() {
                   </div>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem asChild>
-                    <Link href="/member">Dashboard</Link>
+                    <Link href="/member/dashboard">Dashboard</Link>
                   </DropdownMenuItem>
                   <DropdownMenuItem asChild>
                     <Link href="/member/profile">Profile</Link>
@@ -137,14 +128,13 @@ export default function SiteHeader() {
                 </DropdownMenuContent>
               </DropdownMenu>
             ) : (
-              <Link href="/login">
+              <Link href="/auth/login">
                 <Button variant="default" size="sm">
                   Login
                 </Button>
               </Link>
             )}
 
-            {/* Mobile menu button */}
             <Button
               variant="ghost"
               size="icon"
@@ -157,7 +147,6 @@ export default function SiteHeader() {
           </div>
         </div>
 
-        {/* Mobile search */}
         <div className="md:hidden pb-3">
           <div className="relative">
             <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
@@ -172,7 +161,6 @@ export default function SiteHeader() {
         </div>
       </div>
 
-      {/* Mobile menu */}
       {mobileMenuOpen && (
         <div className="lg:hidden border-t">
           <nav className="container mx-auto px-4 py-4 flex flex-col gap-2">

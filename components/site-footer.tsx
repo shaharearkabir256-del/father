@@ -1,12 +1,11 @@
 import Link from "next/link"
-import { Facebook, Youtube, Phone, Mail, MapPin } from "lucide-react"
+import { Facebook, Youtube, Phone, Mail } from "lucide-react"
 
 export default function SiteFooter() {
   return (
     <footer className="bg-secondary border-t">
       <div className="container mx-auto px-4 py-12">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {/* About */}
           <div>
             <div className="flex items-center gap-2 mb-4">
               <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary text-primary-foreground font-bold text-xl">
@@ -29,7 +28,6 @@ export default function SiteFooter() {
             </div>
           </div>
 
-          {/* Quick Links */}
           <div>
             <h4 className="font-semibold mb-4">Quick Links</h4>
             <ul className="space-y-2 text-sm">
@@ -51,7 +49,6 @@ export default function SiteFooter() {
             </ul>
           </div>
 
-          {/* Member Area */}
           <div>
             <h4 className="font-semibold mb-4">Member Area</h4>
             <ul className="space-y-2 text-sm">
@@ -68,7 +65,6 @@ export default function SiteFooter() {
             </ul>
           </div>
 
-          {/* Contact */}
           <div>
             <h4 className="font-semibold mb-4">Contact Us</h4>
             <ul className="space-y-3 text-sm">
@@ -88,7 +84,6 @@ export default function SiteFooter() {
           </div>
         </div>
 
-        {/* Footer */}
         <div className="mt-8 pt-8 border-t text-center text-sm text-muted-foreground">
           &copy; {new Date().getFullYear()} Daily Income Bazar. All rights reserved.
         </div>
