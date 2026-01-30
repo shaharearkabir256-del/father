@@ -1,0 +1,206 @@
+'use client';
+
+import { useContext, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import Link from 'next/link';
+import SiteHeader from '@/components/site-header';
+import SiteFooter from '@/components/site-footer';
+import { Button } from '@/components/ui/button';
+import { AuthContext } from '@/lib/auth-context';
+import { Mail, Lock, User, AlertCircle, Phone } from 'lucide-react';
+
+export default function RegisterPage() {
+  const router = useRouter();
+  const { signup, loading } = useContext(AuthContext);
+  const [formData, setFormData] = useState({
+    fullName: '',
+    email: '',
+    phone: '',
+    password: '',
+    confirmPassword: '',
+    sponsorId: ''
+  });
+  const [error, setError] = useState('');
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError('');
+
+    if (formData.password !== formData.confirmPassword) {
+      setError('পাসওয়ার্ড মিলছে না');
+      return;
+    }
+
+    try {
+      await signup({
+        email: formData.email,
+        password: formData.password,
+        displayName: formData.fullName,
+        phone: formData.phone,
+        sponsorId: formData.sponsorId
+      });
+      router.push('/member/dashboard');
+    } catch (err: any) {
+      setError(err.message || 'রেজিস্ট্রেশন ব্যর্থ হয়েছে');
+    }
+  };
+
+  return (
+    <>
+      <SiteHeader />
+      <main className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 py-12 px-4">
+        <div className="max-w-md mx-auto">
+          <div className="bg-white rounded-lg shadow-lg p-8">
+            <div className="text-center mb-8">
+              <h1 className="text-3xl font-bold text-slate-900">রেজিস্টার করুন</h1>
+              <p className="text-slate-600 mt-2">নতুন অ্যাকাউন্ট তৈরি করুন</p>
+            </div>
+
+            {error && (
+              <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-6 flex gap-3">
+                <AlertCircle className="h-5 w-5 text-red-600 flex-shrink-0 mt-0.5" />
+                <p className="text-red-800 text-sm">{error}</p>
+              </div>
+            )}
+
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div>
+                <label className="block text-sm font-semibold text-slate-700 mb-2">
+                  সম্পূর্ণ নাম
+                </label>
+                <div className="relative">
+                  <User className="absolute left-3 top-3.5 h-5 w-5 text-slate-400" />
+                  <input
+                    type="text"
+                    name="fullName"
+                    value={formData.fullName}
+                    onChange={handleChange}
+                    className="w-full pl-10 pr-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    placeholder="আপনার নাম"
+                    required
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-sm font-semibold text-slate-700 mb-2">
+                  ইমেইল
+                </label>
+                <div className="relative">
+                  <Mail className="absolute left-3 top-3.5 h-5 w-5 text-slate-400" />
+                  <input
+                    type="email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleChange}
+                    className="w-full pl-10 pr-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    placeholder="আপনার ইমেইল"
+                    required
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-sm font-semibold text-slate-700 mb-2">
+                  ফোন নম্বর
+                </label>
+                <div className="relative">
+                  <Phone className="absolute left-3 top-3.5 h-5 w-5 text-slate-400" />
+                  <input
+                    type="tel"
+                    name="phone"
+                    value={formData.phone}
+                    onChange={handleChange}
+                    className="w-full pl-10 pr-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    placeholder="আপনার ফোন"
+                    required
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-sm font-semibold text-slate-700 mb-2">
+                  স্পন্সর আইডি
+                </label>
+                <input
+                  type="text"
+                  name="sponsorId"
+                  value={formData.sponsorId}
+                  onChange={handleChange}
+                  className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  placeholder="আপনার স্পন্সরের আইডি"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-semibold text-slate-700 mb-2">
+                  পাসওয়ার্ড
+                </label>
+                <div className="relative">
+                  <Lock className="absolute left-3 top-3.5 h-5 w-5 text-slate-400" />
+                  <input
+                    type="password"
+                    name="password"
+                    value={formData.password}
+                    onChange={handleChange}
+                    className="w-full pl-10 pr-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    placeholder="পাসওয়ার্ড"
+                    required
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-sm font-semibold text-slate-700 mb-2">
+                  পাসওয়ার্ড নিশ্চিত করুন
+                </label>
+                <div className="relative">
+                  <Lock className="absolute left-3 top-3.5 h-5 w-5 text-slate-400" />
+                  <input
+                    type="password"
+                    name="confirmPassword"
+                    value={formData.confirmPassword}
+                    onChange={handleChange}
+                    className="w-full pl-10 pr-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    placeholder="পাসওয়ার্ড নিশ্চিত করুন"
+                    required
+                  />
+                </div>
+              </div>
+
+              <Button
+                type="submit"
+                size="lg"
+                className="w-full"
+                disabled={loading}
+              >
+                {loading ? 'রেজিস্টার হচ্ছে...' : 'রেজিস্টার করুন'}
+              </Button>
+            </form>
+
+            <div className="mt-6 text-center text-sm text-slate-600">
+              <p>
+                ইতিমধ্যে সদস্য?{' '}
+                <Link href="/auth/login" className="text-blue-600 hover:text-blue-700 font-semibold">
+                  লগইন করুন
+                </Link>
+              </p>
+            </div>
+
+            <div className="mt-6 pt-6 border-t border-slate-200">
+              <Link href="/" className="text-blue-600 hover:text-blue-700 text-sm font-semibold text-center block">
+                ← হোম পেজে ফিরুন
+              </Link>
+            </div>
+          </div>
+        </div>
+      </main>
+      <SiteFooter />
+    </>
+  );
+}
