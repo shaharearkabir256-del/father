@@ -25,7 +25,7 @@ export async function POST(request: Request) {
     return NextResponse.json({
       id: docRef.id,
       success: true,
-      message: 'আপনার বার্তা সফলভাবে পাঠানো হয়েছে'
+      message: 'Your message has been sent successfully'
     });
   } catch (error) {
     console.error('Error sending contact message:', error);

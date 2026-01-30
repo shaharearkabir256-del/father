@@ -1,10 +1,10 @@
 import { NextResponse } from 'next/server';
 
 const categories = [
-  { id: 'electronics', name: 'ইলেকট্রনিক্স' },
-  { id: 'accessories', name: 'এক্সেসরিজ' },
-  { id: 'health', name: 'স্বাস্থ্য' },
-  { id: 'clothing', name: 'পোশাক' },
+  { id: 'electronics', name: 'Electronics' },
+  { id: 'accessories', name: 'Accessories' },
+  { id: 'health', name: 'Health' },
+  { id: 'clothing', name: 'Clothing' },
 ];
 
 export async function GET() {

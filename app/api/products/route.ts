@@ -4,7 +4,7 @@ import { NextResponse } from 'next/server';
 const sampleProducts = [
   {
     id: '1',
-    name: 'স্মার্টফোন X-Pro',
+    name: 'Smartphone X-Pro',
     price: 35000,
     salePrice: 28999,
     category: 'electronics',
@@ -13,7 +13,7 @@ const sampleProducts = [
   },
   {
     id: '2',
-    name: 'ওয়্যারলেস ইয়ারবাডস',
+    name: 'Wireless Earbuds',
     price: 5000,
     salePrice: 3999,
     category: 'electronics',
@@ -22,7 +22,7 @@ const sampleProducts = [
   },
   {
     id: '3',
-    name: 'প্রিমিয়াম ওয়াচ',
+    name: 'Premium Watch',
     price: 15000,
     salePrice: 11999,
     category: 'accessories',
@@ -31,7 +31,7 @@ const sampleProducts = [
   },
   {
     id: '4',
-    name: 'ফিটনেস ট্র্যাকার',
+    name: 'Fitness Tracker',
     price: 8000,
     salePrice: 6499,
     category: 'health',
@@ -40,7 +40,7 @@ const sampleProducts = [
   },
   {
     id: '5',
-    name: 'পোর্টেবল চার্জার',
+    name: 'Portable Charger',
     price: 3000,
     salePrice: 2299,
     category: 'electronics',
@@ -49,7 +49,7 @@ const sampleProducts = [
   },
   {
     id: '6',
-    name: 'ব্লুটুথ স্পিকার',
+    name: 'Bluetooth Speaker',
     price: 6000,
     salePrice: 4799,
     category: 'electronics',

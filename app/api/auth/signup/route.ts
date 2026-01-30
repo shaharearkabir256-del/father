@@ -57,16 +57,17 @@ export async function POST(request: Request) {
       uid: user.uid,
       email: user.email
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Error signing up:', error);
     
     let errorMessage = 'Registration failed';
-    if (error.code === 'auth/email-already-in-use') {
-      errorMessage = 'এই ইমেইল ইতিমধ্যে ব্যবহার করা হয়েছে';
-    } else if (error.code === 'auth/weak-password') {
-      errorMessage = 'পাসওয়ার্ড অন্তত ৬ অক্ষর হতে হবে';
-    } else if (error.code === 'auth/invalid-email') {
-      errorMessage = 'অবৈধ ইমেইল ঠিকানা';
+    const firebaseError = error as { code?: string };
+    if (firebaseError.code === 'auth/email-already-in-use') {
+      errorMessage = 'This email is already in use';
+    } else if (firebaseError.code === 'auth/weak-password') {
+      errorMessage = 'Password must be at least 6 characters';
+    } else if (firebaseError.code === 'auth/invalid-email') {
+      errorMessage = 'Invalid email address';
     }
 
     return NextResponse.json({ error: errorMessage }, { status: 400 });
