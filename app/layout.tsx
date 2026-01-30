@@ -9,12 +9,12 @@ const inter = Inter({ subsets: ["latin"], variable: "--font-inter" })
 
 export const metadata: Metadata = {
   title: "Daily Income Bazar - Online Shopping & MLM Platform",
-  description: "Daily Income Bazar - Your trusted online shopping destination with exciting MLM earning opportunities. Shop quality products and earn daily income.",
+  description: "Daily Income Bazar - Your trusted online shopping destination with exciting MLM earning opportunities.",
   keywords: "online shopping, MLM, daily income, e-commerce, Bangladesh",
 }
 
 export const viewport: Viewport = {
-  themeColor: "#16a34a",
+  themeColor: "#2563eb",
 }
 
 export default function RootLayout({

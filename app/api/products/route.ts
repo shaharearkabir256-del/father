@@ -1,71 +1,80 @@
 import { db } from '@/lib/firebase';
-import { collection, getDocs, query, where, limit } from 'firebase/firestore';
+import { collection, getDocs, query, where, limit, addDoc, serverTimestamp } from 'firebase/firestore';
 import { NextResponse } from 'next/server';
+
+// Sample products - will be replaced with Firebase in production
+const sampleProducts = [
+  {
+    id: '1',
+    name: 'স্মার্টফোন X-Pro',
+    price: 35000,
+    salePrice: 28999,
+    category: 'electronics',
+    img: 'https://images.unsplash.com/photo-1511707267537-b85faf00021e?w=500&h=500&fit=crop',
+    rp: 500,
+  },
+  {
+    id: '2',
+    name: 'ওয়্যারলেস ইয়ারবাডস',
+    price: 5000,
+    salePrice: 3999,
+    category: 'electronics',
+    img: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500&h=500&fit=crop',
+    rp: 100,
+  },
+  {
+    id: '3',
+    name: 'প্রিমিয়াম ওয়াচ',
+    price: 15000,
+    salePrice: 11999,
+    category: 'accessories',
+    img: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=500&h=500&fit=crop',
+    rp: 250,
+  },
+  {
+    id: '4',
+    name: 'ফিটনেস ট্র্যাকার',
+    price: 8000,
+    salePrice: 6499,
+    category: 'health',
+    img: 'https://images.unsplash.com/photo-1575311373937-040b8e1fd5b6?w=500&h=500&fit=crop',
+    rp: 150,
+  },
+  {
+    id: '5',
+    name: 'পোর্টেবল চার্জার',
+    price: 3000,
+    salePrice: 2299,
+    category: 'electronics',
+    img: 'https://images.unsplash.com/photo-1609091839311-d5365f9ff1c5?w=500&h=500&fit=crop',
+    rp: 50,
+  },
+  {
+    id: '6',
+    name: 'ব্লুটুথ স্পিকার',
+    price: 6000,
+    salePrice: 4799,
+    category: 'electronics',
+    img: 'https://images.unsplash.com/photo-1589003077984-894e133814c9?w=500&h=500&fit=crop',
+    rp: 120,
+  },
+];
 
 export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
     const category = searchParams.get('category');
-    const limitCount = parseInt(searchParams.get('limit') || '50');
 
-    let q;
+    // For now, return sample products
+    let filtered = sampleProducts;
+    
     if (category && category !== 'all') {
-      q = query(collection(db, 'products'), where('category', '==', category), limit(limitCount));
-    } else {
-      q = query(collection(db, 'products'), limit(limitCount));
+      filtered = filtered.filter(p => p.category === category);
     }
 
-    const querySnapshot = await getDocs(q);
-    const products = querySnapshot.docs.map(doc => ({
-      id: doc.id,
-      ...doc.data()
-    }));
-
-    return NextResponse.json(products);
+    return NextResponse.json(filtered);
   } catch (error) {
     console.error('Error fetching products:', error);
     return NextResponse.json({ error: 'Failed to fetch products' }, { status: 500 });
-  }
-}
-
-export async function POST(request: Request) {
-  try {
-    const body = await request.json();
-    
-    // Only admin can add products - implement proper auth check
-    const { 
-      name, 
-      price, 
-      salePrice, 
-      discount_price, 
-      img, 
-      category, 
-      rp,
-      description,
-      stock 
-    } = body;
-
-    if (!name || !price || !category) {
-      return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
-    }
-
-    const docRef = await db.collection('products').add({
-      name,
-      price: parseFloat(price),
-      salePrice: salePrice ? parseFloat(salePrice) : null,
-      discount_price: discount_price ? parseFloat(discount_price) : null,
-      img: img || null,
-      category,
-      rp: parseInt(rp) || 0,
-      description: description || '',
-      stock: parseInt(stock) || 0,
-      createdAt: new Date(),
-      updatedAt: new Date()
-    });
-
-    return NextResponse.json({ id: docRef.id, success: true });
-  } catch (error) {
-    console.error('Error creating product:', error);
-    return NextResponse.json({ error: 'Failed to create product' }, { status: 500 });
   }
 }

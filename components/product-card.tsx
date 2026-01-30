@@ -3,8 +3,7 @@
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { ShoppingCart, Star } from 'lucide-react';
-import { useContext } from 'react';
-import { CartContext } from '@/lib/cart-context';
+import { useCart } from '@/lib/cart-context';
 import Image from 'next/image';
 
 interface Product {
@@ -18,12 +17,23 @@ interface Product {
 }
 
 export default function ProductCard({ product }: { product: Product }) {
-  const { addToCart } = useContext(CartContext);
+  const { addItem } = useCart();
   
   const displayPrice = product.discount_price || product.salePrice || product.price;
   const discount = product.price > displayPrice 
     ? Math.round(((product.price - displayPrice) / product.price) * 100)
     : 0;
+
+  const handleAddToCart = () => {
+    addItem({
+      id: product.id,
+      name: product.name,
+      price: product.price,
+      salePrice: displayPrice,
+      image: product.img || '',
+      points: product.rp
+    });
+  };
 
   return (
     <div className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow overflow-hidden h-full flex flex-col">
@@ -76,13 +86,7 @@ export default function ProductCard({ product }: { product: Product }) {
         </div>
 
         <Button
-          onClick={() => addToCart({
-            id: product.id,
-            name: product.name,
-            price: displayPrice,
-            quantity: 1,
-            img: product.img
-          })}
+          onClick={handleAddToCart}
           size="sm"
           className="w-full"
         >

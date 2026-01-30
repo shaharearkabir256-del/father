@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import useSWR from 'swr';
 import Link from 'next/link';
 import SiteHeader from '@/components/site-header';
@@ -37,17 +37,17 @@ export default function HomePage() {
   return (
     <>
       <SiteHeader />
-      <main className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
+      <main className="min-h-screen bg-white">
         {/* Hero Section */}
         <section className="bg-gradient-to-r from-blue-600 to-blue-800 text-white py-16 md:py-24">
           <div className="container mx-auto px-4">
-            <h1 className="text-4xl md:text-5xl font-bold mb-4 text-balance">Daily Income Bazar</h1>
-            <p className="text-lg md:text-xl text-blue-100 text-balance mb-8">
+            <h1 className="text-4xl md:text-5xl font-bold mb-4">Daily Income Bazar</h1>
+            <p className="text-lg md:text-xl text-blue-100 mb-8">
               প্রিমিয়াম পণ্য এবং আজীবন আয়ের সুযোগ
             </p>
             <div className="flex gap-4">
               <Link href="#products">
-                <Button size="lg" variant="secondary">
+                <Button size="lg" className="bg-white text-blue-600 hover:bg-blue-50">
                   কেনাকাটা করুন
                 </Button>
               </Link>
@@ -70,9 +70,9 @@ export default function HomePage() {
                   placeholder="পণ্য খুঁজুন..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full px-4 py-3 pl-12 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-4 py-3 pl-12 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
-                <Search className="absolute left-4 top-3.5 h-5 w-5 text-slate-400" />
+                <Search className="absolute left-4 top-3.5 h-5 w-5 text-gray-400" />
               </div>
               
               <div className="flex gap-2 overflow-x-auto pb-2 md:pb-0 w-full md:w-auto">
@@ -99,7 +99,7 @@ export default function HomePage() {
         </section>
 
         {/* Products Grid */}
-        <section id="products" className="py-12 md:py-16">
+        <section id="products" className="py-12 md:py-16 bg-white">
           <div className="container mx-auto px-4">
             <h2 className="text-3xl font-bold mb-8">আমাদের পণ্য</h2>
             
@@ -115,14 +115,14 @@ export default function HomePage() {
               </div>
             ) : (
               <div className="text-center py-12">
-                <p className="text-slate-600 text-lg">কোনো পণ্য পাওয়া যায়নি</p>
+                <p className="text-gray-600 text-lg">কোনো পণ্য পাওয়া যায়নি</p>
               </div>
             )}
           </div>
         </section>
 
         {/* Features Section */}
-        <section className="bg-white py-12 md:py-16">
+        <section className="bg-gray-50 py-12 md:py-16">
           <div className="container mx-auto px-4">
             <h2 className="text-3xl font-bold mb-12 text-center">কেন আমাদের বেছে নিবেন?</h2>
             <div className="grid md:grid-cols-3 gap-8">
@@ -136,7 +136,7 @@ export default function HomePage() {
                     <div className="text-2xl">✓</div>
                   </div>
                   <h3 className="text-xl font-semibold mb-2">{feature.title}</h3>
-                  <p className="text-slate-600">{feature.desc}</p>
+                  <p className="text-gray-600">{feature.desc}</p>
                 </div>
               ))}
             </div>
