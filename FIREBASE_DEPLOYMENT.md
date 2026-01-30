@@ -48,21 +48,18 @@ In Firebase Console:
 ### 5. Configure Firestore Security Rules
 Go to Firebase Console > Firestore Database > Rules
 
-Replace with:
+Replace with (Simple Development Setup):
 ```javascript
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-    // Members can read/write their own data
-    match /members/{userId} {
-      allow read, write: if request.auth.uid == userId;
+    // Allow all authenticated users to read
+    match /{document=**} {
+      allow read: if request.auth != null;
+      allow write: if request.auth != null;
     }
     
-    match /memberBalance/{userId} {
-      allow read, write: if request.auth.uid == userId;
-    }
-    
-    // Products are publicly readable
+    // Public read access to products and categories
     match /products/{document=**} {
       allow read: if true;
     }
@@ -71,20 +68,72 @@ service cloud.firestore {
       allow read: if true;
     }
     
-    // Orders - read/write own orders only
+    match /subcategories/{document=**} {
+      allow read: if true;
+    }
+  }
+}
+```
+
+**Important:** এই rules development/testing এর জন্য। Production এ, নীচের strict rules ব্যবহার করুন:
+
+```javascript
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function isAuth() {
+      return request.auth != null;
+    }
+    
+    function isOwner(userId) {
+      return request.auth.uid == userId;
+    }
+    
+    function isAdmin() {
+      return get(/databases/$(database)/documents/admins/$(request.auth.uid)).data.role == 'admin';
+    }
+    
+    // Members data
+    match /members/{userId} {
+      allow read: if isAuth();
+      allow write: if isOwner(userId);
+    }
+    
+    match /memberBalance/{userId} {
+      allow read: if isOwner(userId);
+      allow write: if isOwner(userId);
+    }
+    
+    // Public data
+    match /products/{document=**} {
+      allow read: if true;
+    }
+    
+    match /categories/{document=**} {
+      allow read: if true;
+    }
+    
+    // Orders
     match /orders/{orderId} {
-      allow read, write: if request.auth.uid == resource.data.userId;
-      allow create: if request.auth.uid == request.resource.data.userId;
+      allow read, write: if isOwner(resource.data.userId) || isAdmin();
+      allow create: if isAuth();
+    }
+    
+    // Withdrawals
+    match /withdrawals/{withdrawalId} {
+      allow read: if isOwner(resource.data.userId) || isAdmin();
+      allow create, write: if isOwner(request.resource.data.userId);
+    }
+    
+    // Admin data
+    match /admin/{document=**} {
+      allow read, write: if isAdmin();
     }
     
     // Contact messages
     match /contactMessages/{document=**} {
       allow create: if true;
-    }
-    
-    // Admin panel - implement proper auth
-    match /admin/{document=**} {
-      allow read, write: if false; // Implement proper admin check
+      allow read, write: if isAdmin();
     }
   }
 }
