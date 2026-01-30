@@ -18,9 +18,9 @@ interface Product {
 
 export default function ProductCard({ product }: { product: Product }) {
   const { addItem } = useCart();
-  
+
   const displayPrice = product.discount_price || product.salePrice || product.price;
-  const discount = product.price > displayPrice 
+  const discount = product.price > displayPrice
     ? Math.round(((product.price - displayPrice) / product.price) * 100)
     : 0;
 
@@ -56,21 +56,21 @@ export default function ProductCard({ product }: { product: Product }) {
           </div>
         )}
       </div>
-      
+
       <div className="p-4 flex-1 flex flex-col">
         <Link href={`/products/${product.id}`}>
           <h3 className="font-semibold text-slate-900 hover:text-blue-600 transition-colors line-clamp-2 mb-2">
             {product.name}
           </h3>
         </Link>
-        
+
         <div className="flex items-center gap-2 mb-3">
           <div className="flex text-yellow-400">
             {[...Array(5)].map((_, i) => (
               <Star key={i} className="h-4 w-4 fill-current" />
             ))}
           </div>
-          <span className="text-sm text-slate-600">(42 রিভিউ)</span>
+          <span className="text-sm text-slate-600">(42)</span>
         </div>
 
         <div className="mb-4 flex-1">
@@ -81,15 +81,11 @@ export default function ProductCard({ product }: { product: Product }) {
             )}
           </div>
           <div className="text-sm text-green-600 mt-1">
-            💰 {product.rp} পয়েন্ট অর্জন করুন
+            💰 {product.rp} পয়েন্ট
           </div>
         </div>
 
-        <Button
-          onClick={handleAddToCart}
-          size="sm"
-          className="w-full"
-        >
+        <Button onClick={handleAddToCart} size="sm" className="w-full">
           <ShoppingCart className="h-4 w-4 mr-2" />
           কার্টে যোগ করুন
         </Button>
