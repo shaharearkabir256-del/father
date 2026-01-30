@@ -1,9 +1,6 @@
 import type { Metadata, Viewport } from "next"
 import { Inter } from "next/font/google"
 import "./globals.css"
-import { AuthProvider } from "@/lib/auth-context"
-import { CartProvider } from "@/lib/cart-context"
-import { Toaster } from "@/components/ui/sonner"
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" })
 
@@ -24,13 +21,8 @@ export default function RootLayout({
 }) {
   return (
     <html lang="bn">
-      <body className={`${inter.variable} font-sans antialiased`}>
-        <AuthProvider>
-          <CartProvider>
-            {children}
-            <Toaster position="top-right" />
-          </CartProvider>
-        </AuthProvider>
+      <body className={`${inter.variable} font-sans antialiased bg-slate-50`}>
+        {children}
       </body>
     </html>
   )

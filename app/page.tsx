@@ -4,10 +4,7 @@ import { useState } from 'react';
 import useSWR from 'swr';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Button } from '@/components/ui/button';
-import { Search, ShoppingCart, Menu, X, Star, Facebook, Youtube, Phone, Mail, MapPin, User } from 'lucide-react';
-import { useCart } from '@/lib/cart-context';
-import { useAuth } from '@/lib/auth-context';
+import { Search, ShoppingCart, Menu, X, Star, Facebook, Youtube, Phone, Mail } from 'lucide-react';
 
 interface Product {
   id: string;
@@ -21,63 +18,34 @@ interface Product {
 
 const fetcher = (url: string) => fetch(url).then(r => r.json());
 
-// Inline Header Component
 function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const { cart } = useCart();
-  const { user, logout } = useAuth();
-  const cartCount = cart.reduce((sum, item) => sum.quantity + item.quantity, 0);
 
   return (
     <header className="bg-white shadow-md sticky top-0 z-50">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
-          <Link href="/" className="text-xl font-bold text-blue-600">
-            Daily Income Bazar
-          </Link>
-
+          <Link href="/" className="text-xl font-bold text-blue-600">Daily Income Bazar</Link>
           <nav className="hidden md:flex items-center gap-6">
             <Link href="/" className="text-slate-700 hover:text-blue-600">হোম</Link>
             <Link href="/about" className="text-slate-700 hover:text-blue-600">আমাদের সম্পর্কে</Link>
             <Link href="/contact" className="text-slate-700 hover:text-blue-600">যোগাযোগ</Link>
           </nav>
-
           <div className="flex items-center gap-4">
             <Link href="/cart" className="relative">
               <ShoppingCart className="h-6 w-6 text-slate-700" />
-              {cartCount > 0 && (
-                <span className="absolute -top-2 -right-2 bg-blue-600 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center">
-                  {cartCount}
-                </span>
-              )}
             </Link>
-
-            {user ? (
-              <div className="flex items-center gap-2">
-                <Link href="/member/dashboard">
-                  <Button variant="outline" size="sm">ড্যাশবোর্ড</Button>
-                </Link>
-                <Button variant="ghost" size="sm" onClick={logout}>লগআউট</Button>
-              </div>
-            ) : (
-              <Link href="/auth/login">
-                <Button size="sm">লগইন</Button>
-              </Link>
-            )}
-
+            <Link href="/auth/login" className="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-blue-700">লগইন</Link>
             <button className="md:hidden" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
               {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
             </button>
           </div>
         </div>
-
         {mobileMenuOpen && (
-          <nav className="md:hidden py-4 border-t">
-            <div className="flex flex-col gap-4">
-              <Link href="/" className="text-slate-700">হোম</Link>
-              <Link href="/about" className="text-slate-700">আমাদের সম্পর্কে</Link>
-              <Link href="/contact" className="text-slate-700">যোগাযোগ</Link>
-            </div>
+          <nav className="md:hidden py-4 border-t flex flex-col gap-4">
+            <Link href="/" className="text-slate-700">হোম</Link>
+            <Link href="/about" className="text-slate-700">আমাদের সম্পর্কে</Link>
+            <Link href="/contact" className="text-slate-700">যোগাযোগ</Link>
           </nav>
         )}
       </div>
@@ -85,7 +53,6 @@ function Header() {
   );
 }
 
-// Inline Footer Component
 function Footer() {
   return (
     <footer className="bg-slate-900 text-white py-12">
@@ -125,13 +92,9 @@ function Footer() {
   );
 }
 
-// Inline ProductCard Component
 function ProductCard({ product }: { product: Product }) {
-  const { addItem } = useCart();
   const displayPrice = product.salePrice || product.price;
-  const discount = product.price > displayPrice 
-    ? Math.round(((product.price - displayPrice) / product.price) * 100)
-    : 0;
+  const discount = product.price > displayPrice ? Math.round(((product.price - displayPrice) / product.price) * 100) : 0;
 
   return (
     <div className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow overflow-hidden">
@@ -157,16 +120,9 @@ function ProductCard({ product }: { product: Product }) {
           {discount > 0 && <span className="text-sm text-slate-500 line-through">&#2547;{product.price}</span>}
         </div>
         <p className="text-sm text-green-600 mb-3">{product.rp} পয়েন্ট</p>
-        <Button size="sm" className="w-full" onClick={() => addItem({ 
-          id: product.id, 
-          name: product.name, 
-          price: product.price, 
-          salePrice: displayPrice, 
-          image: product.img || '', 
-          points: product.rp 
-        })}>
-          <ShoppingCart className="h-4 w-4 mr-2" /> কার্টে যোগ করুন
-        </Button>
+        <Link href={`/products/${product.id}`} className="block w-full bg-blue-600 text-white text-center py-2 rounded-lg hover:bg-blue-700">
+          <ShoppingCart className="h-4 w-4 inline mr-2" /> বিস্তারিত দেখুন
+        </Link>
       </div>
     </div>
   );
@@ -194,8 +150,8 @@ export default function HomePage() {
             <h1 className="text-4xl md:text-5xl font-bold mb-4">Daily Income Bazar</h1>
             <p className="text-lg md:text-xl text-blue-100 mb-8">প্রিমিয়াম পণ্য এবং আজীবন আয়ের সুযোগ</p>
             <div className="flex gap-4">
-              <Link href="#products"><Button size="lg" className="bg-white text-blue-600 hover:bg-blue-50">কেনাকাটা করুন</Button></Link>
-              <Link href="/about"><Button size="lg" variant="outline" className="text-white border-white hover:bg-blue-700">আমাদের সম্পর্কে</Button></Link>
+              <a href="#products" className="bg-white text-blue-600 px-6 py-3 rounded-lg font-semibold hover:bg-blue-50">কেনাকাটা করুন</a>
+              <Link href="/about" className="border border-white text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700">আমাদের সম্পর্কে</Link>
             </div>
           </div>
         </section>
@@ -214,9 +170,9 @@ export default function HomePage() {
                 <Search className="absolute left-4 top-3.5 h-5 w-5 text-gray-400" />
               </div>
               <div className="flex gap-2 overflow-x-auto pb-2 md:pb-0 w-full md:w-auto">
-                <Button variant={selectedCategory === 'all' ? 'default' : 'outline'} onClick={() => setSelectedCategory('all')} size="sm">সব</Button>
+                <button onClick={() => setSelectedCategory('all')} className={`px-4 py-2 rounded-lg text-sm whitespace-nowrap ${selectedCategory === 'all' ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}>সব</button>
                 {categories.map((cat: any) => (
-                  <Button key={cat.id} variant={selectedCategory === cat.id ? 'default' : 'outline'} onClick={() => setSelectedCategory(cat.id)} size="sm">{cat.name}</Button>
+                  <button key={cat.id} onClick={() => setSelectedCategory(cat.id)} className={`px-4 py-2 rounded-lg text-sm whitespace-nowrap ${selectedCategory === cat.id ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}>{cat.name}</button>
                 ))}
               </div>
             </div>
@@ -248,7 +204,7 @@ export default function HomePage() {
                 { title: 'নিরাপদ লেনদেন', desc: 'সম্পূর্ণ সুরক্ষিত পেমেন্ট এবং ক্যাশ সিস্টেম' },
               ].map((feature, i) => (
                 <div key={i} className="text-center">
-                  <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4"><div className="text-2xl text-blue-600">&#10003;</div></div>
+                  <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4"><span className="text-2xl text-blue-600">&#10003;</span></div>
                   <h3 className="text-xl font-semibold mb-2">{feature.title}</h3>
                   <p className="text-gray-600">{feature.desc}</p>
                 </div>

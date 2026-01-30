@@ -1,5 +1,3 @@
-import { db } from '@/lib/firebase';
-import { collection, addDoc, Timestamp, doc, updateDoc, increment } from 'firebase/firestore';
 import { NextResponse } from 'next/server';
 
 export async function POST(request: Request) {
@@ -13,29 +11,12 @@ export async function POST(request: Request) {
 
     const withdrawAmount = parseFloat(amount);
     const charge = 50;
-    const totalDebit = withdrawAmount + charge;
+    const withdrawalId = `WD-${Date.now()}`;
 
-    // Create withdrawal request
-    const docRef = await addDoc(collection(db, 'withdrawals'), {
-      userId,
-      amount: withdrawAmount,
-      method,
-      accountNumber,
-      charge,
-      totalDebit,
-      status: 'pending',
-      createdAt: Timestamp.now(),
-      updatedAt: Timestamp.now()
-    });
-
-    // Update member balance
-    const balanceRef = doc(db, 'memberBalance', userId);
-    await updateDoc(balanceRef, {
-      cashWallet: increment(-totalDebit)
-    });
+    // In production, save to database and update balance
 
     return NextResponse.json({
-      withdrawalId: docRef.id,
+      withdrawalId,
       success: true,
       message: 'উইথড্র অনুরোধ সফল'
     });

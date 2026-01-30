@@ -4,8 +4,6 @@ import { useState, use } from 'react';
 import useSWR from 'swr';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Button } from '@/components/ui/button';
-import { useCart } from '@/lib/cart-context';
 import { ShoppingCart, ArrowLeft, Star, Truck, Shield } from 'lucide-react';
 
 interface Product {
@@ -24,7 +22,6 @@ const fetcher = (url: string) => fetch(url).then(r => r.json());
 export default function ProductDetail({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
   const [quantity, setQuantity] = useState(1);
-  const { addItem } = useCart();
   const { data: product, isLoading } = useSWR<Product>(`/api/products/${id}`, fetcher);
 
   if (isLoading) {
@@ -39,17 +36,13 @@ export default function ProductDetail({ params }: { params: Promise<{ id: string
     return (
       <main className="container mx-auto px-4 py-12 text-center">
         <p className="text-xl text-slate-600 mb-4">পণ্য পাওয়া যায়নি</p>
-        <Link href="/"><Button>হোম পেজে ফিরুন</Button></Link>
+        <Link href="/" className="inline-block bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700">হোম পেজে ফিরুন</Link>
       </main>
     );
   }
 
   const displayPrice = product.salePrice || product.price;
   const discount = product.price > displayPrice ? Math.round(((product.price - displayPrice) / product.price) * 100) : 0;
-
-  const handleAddToCart = () => {
-    addItem({ id: product.id, name: product.name, price: product.price, salePrice: displayPrice, image: product.img || '', points: product.rp, quantity });
-  };
 
   return (
     <main className="min-h-screen bg-slate-50 py-8">
@@ -93,7 +86,9 @@ export default function ProductDetail({ params }: { params: Promise<{ id: string
                     <button onClick={() => setQuantity(quantity + 1)} className="px-4 py-2 text-slate-600">+</button>
                   </div>
                 </div>
-                <Button onClick={handleAddToCart} size="lg" className="w-full"><ShoppingCart className="h-5 w-5 mr-2" /> কার্টে যোগ করুন</Button>
+                <button className="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 flex items-center justify-center gap-2">
+                  <ShoppingCart className="h-5 w-5" /> কার্টে যোগ করুন
+                </button>
               </div>
             </div>
           </div>

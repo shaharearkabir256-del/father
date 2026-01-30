@@ -1,7 +1,7 @@
-import { auth, db } from '@/lib/firebase';
-import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
-import { doc, setDoc, Timestamp } from 'firebase/firestore';
 import { NextResponse } from 'next/server';
+
+// Simple in-memory user storage - in production use a real database
+const users: Map<string, any> = new Map();
 
 export async function POST(request: Request) {
   try {
@@ -12,64 +12,33 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
     }
 
-    // Create auth user
-    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-    const user = userCredential.user;
+    // Check if email already exists
+    if (users.has(email)) {
+      return NextResponse.json({ error: 'This email is already in use' }, { status: 400 });
+    }
 
-    // Update profile
-    await updateProfile(user, {
-      displayName: displayName
-    });
-
-    // Create member document in Firestore
-    await setDoc(doc(db, 'members', user.uid), {
-      uid: user.uid,
-      email: user.email,
-      displayName: displayName,
+    // Create user
+    const uid = `user-${Date.now()}`;
+    const user = {
+      uid,
+      email,
+      displayName,
       phone: phone || '',
       sponsorId: sponsorId || '',
-      createdAt: Timestamp.now(),
-      updatedAt: Timestamp.now(),
+      createdAt: new Date().toISOString(),
       status: 'active',
-      level: 1,
-      joinDate: Timestamp.now()
-    });
+      level: 1
+    };
 
-    // Create initial balance document
-    await setDoc(doc(db, 'memberBalance', user.uid), {
-      uid: user.uid,
-      totalBalance: 0,
-      cashWallet: 0,
-      upgradeWallet: 0,
-      shoppingWallet: 0,
-      directIncome: 0,
-      dailyIncome: 0,
-      generationIncome: 0,
-      matchingIncome: 0,
-      rewardPoints: 0,
-      purchasePoints: 0,
-      createdAt: Timestamp.now(),
-      updatedAt: Timestamp.now()
-    });
+    users.set(email, { ...user, password }); // In production, hash the password!
 
     return NextResponse.json({
       success: true,
-      uid: user.uid,
-      email: user.email
+      uid,
+      email
     });
-  } catch (error: unknown) {
+  } catch (error) {
     console.error('Error signing up:', error);
-    
-    let errorMessage = 'Registration failed';
-    const firebaseError = error as { code?: string };
-    if (firebaseError.code === 'auth/email-already-in-use') {
-      errorMessage = 'This email is already in use';
-    } else if (firebaseError.code === 'auth/weak-password') {
-      errorMessage = 'Password must be at least 6 characters';
-    } else if (firebaseError.code === 'auth/invalid-email') {
-      errorMessage = 'Invalid email address';
-    }
-
-    return NextResponse.json({ error: errorMessage }, { status: 400 });
+    return NextResponse.json({ error: 'Registration failed' }, { status: 400 });
   }
 }

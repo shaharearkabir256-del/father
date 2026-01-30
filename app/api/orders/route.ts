@@ -1,41 +1,42 @@
-import { db } from '@/lib/firebase';
-import { collection, addDoc, Timestamp, doc, updateDoc, increment } from 'firebase/firestore';
 import { NextResponse } from 'next/server';
+
+// Simulated order storage - in production use a real database
+let orders: any[] = [];
 
 export async function POST(request: Request) {
   try {
     const body = await request.json();
     const { userId, items, shippingData, paymentMethod, totalAmount } = body;
 
-    if (!userId || !items || !shippingData) {
+    if (!items || !shippingData) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
     }
 
-    // Create order
-    const docRef = await addDoc(collection(db, 'orders'), {
-      userId,
+    const orderId = `ORD-${Date.now()}`;
+    
+    const order = {
+      orderId,
+      userId: userId || 'guest',
       items,
       shippingData,
-      paymentMethod,
+      paymentMethod: paymentMethod || 'cash_on_delivery',
       totalAmount,
       status: 'pending',
-      createdAt: Timestamp.now(),
-      updatedAt: Timestamp.now(),
-      orderNumber: `ORD-${Date.now()}`
-    });
+      createdAt: new Date().toISOString()
+    };
 
-    // Update user's order count
-    const userRef = doc(db, 'members', userId);
-    await updateDoc(userRef, {
-      totalOrders: increment(1)
-    });
+    orders.push(order);
 
     return NextResponse.json({
-      orderId: docRef.id,
+      orderId,
       success: true
     });
   } catch (error) {
     console.error('Error creating order:', error);
     return NextResponse.json({ error: 'Failed to create order' }, { status: 500 });
   }
+}
+
+export async function GET() {
+  return NextResponse.json(orders);
 }

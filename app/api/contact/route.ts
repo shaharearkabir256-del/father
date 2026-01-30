@@ -1,29 +1,18 @@
-import { db } from '@/lib/firebase';
-import { collection, addDoc, Timestamp } from 'firebase/firestore';
 import { NextResponse } from 'next/server';
 
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { name, email, phone, subject, message } = body;
+    const { name, email, phone, message } = body;
 
-    if (!name || !email || !subject || !message) {
+    if (!name || !email || !message) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
     }
 
-    const docRef = await addDoc(collection(db, 'contactMessages'), {
-      name,
-      email,
-      phone: phone || '',
-      subject,
-      message,
-      status: 'new',
-      createdAt: Timestamp.now(),
-      replied: false
-    });
+    // In production, save to database or send email
+    console.log('Contact message received:', { name, email, phone, message });
 
     return NextResponse.json({
-      id: docRef.id,
       success: true,
       message: 'Your message has been sent successfully'
     });

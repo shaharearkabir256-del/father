@@ -3,15 +3,13 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { Button } from '@/components/ui/button';
-import { useAuth } from '@/lib/auth-context';
 import { Mail, Lock, User, AlertCircle, Phone } from 'lucide-react';
 
 export default function RegisterPage() {
   const router = useRouter();
-  const { signup, loading } = useAuth();
   const [formData, setFormData] = useState({ fullName: '', email: '', phone: '', password: '', confirmPassword: '', sponsorId: '' });
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }));
@@ -21,10 +19,21 @@ export default function RegisterPage() {
     e.preventDefault();
     setError('');
     if (formData.password !== formData.confirmPassword) { setError('পাসওয়ার্ড মিলছে না'); return; }
+    setLoading(true);
     try {
-      await signup({ email: formData.email, password: formData.password, displayName: formData.fullName, phone: formData.phone, sponsorId: formData.sponsorId });
-      router.push('/');
-    } catch (err: any) { setError(err.message || 'রেজিস্ট্রেশন ব্যর্থ হয়েছে'); }
+      const res = await fetch('/api/auth/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData)
+      });
+      if (res.ok) {
+        router.push('/auth/login');
+      } else {
+        const data = await res.json();
+        setError(data.error || 'রেজিস্ট্রেশন ব্যর্থ হয়েছে');
+      }
+    } catch { setError('রেজিস্ট্রেশন ব্যর্থ হয়েছে'); }
+    finally { setLoading(false); }
   };
 
   return (
@@ -84,10 +93,12 @@ export default function RegisterPage() {
                 <input type="password" name="confirmPassword" value={formData.confirmPassword} onChange={handleChange} className="w-full pl-10 pr-4 py-2 border border-slate-300 rounded-lg" placeholder="পাসওয়ার্ড নিশ্চিত করুন" required />
               </div>
             </div>
-            <Button type="submit" size="lg" className="w-full" disabled={loading}>{loading ? 'রেজিস্টার হচ্ছে...' : 'রেজিস্টার করুন'}</Button>
+            <button type="submit" disabled={loading} className="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 disabled:opacity-50">
+              {loading ? 'রেজিস্টার হচ্ছে...' : 'রেজিস্টার করুন'}
+            </button>
           </form>
           <div className="mt-6 text-center text-sm text-slate-600">
-            <p>ইতিমধ্যে সদস্য?{' '}<Link href="/auth/login" className="text-blue-600 hover:text-blue-700 font-semibold">লগইন করুন</Link></p>
+            <p>ইতিমধ্যে সদস্য? <Link href="/auth/login" className="text-blue-600 hover:text-blue-700 font-semibold">লগইন করুন</Link></p>
           </div>
           <div className="mt-6 pt-6 border-t border-slate-200">
             <Link href="/" className="text-blue-600 hover:text-blue-700 text-sm font-semibold text-center block">&#8592; হোম পেজে ফিরুন</Link>

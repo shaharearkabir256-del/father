@@ -1,7 +1,6 @@
 'use client';
 
 import Link from 'next/link';
-import { Button } from '@/components/ui/button';
 import { CheckCircle, Package, Clock, MapPin } from 'lucide-react';
 import { use } from 'react';
 
@@ -56,8 +55,8 @@ export default function OrderConfirmationPage({ params }: { params: Promise<{ id
               <li>&#10003; ক্যাশ অন ডেলিভারি - ডেলিভারির সময় অর্থ প্রদান করুন</li>
             </ul>
           </div>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link href="/"><Button size="lg" className="w-full sm:w-auto">কেনাকাটা চালিয়ে যান</Button></Link>
+          <div className="text-center">
+            <Link href="/" className="inline-block bg-blue-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-blue-700">কেনাকাটা চালিয়ে যান</Link>
           </div>
         </div>
       </div>

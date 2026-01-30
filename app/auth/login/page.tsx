@@ -3,25 +3,35 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { Button } from '@/components/ui/button';
-import { useAuth } from '@/lib/auth-context';
 import { Mail, Lock, AlertCircle } from 'lucide-react';
 
 export default function LoginPage() {
   const router = useRouter();
-  const { login, loading } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
+    setLoading(true);
     try {
-      await login(email, password);
-      router.push('/');
-    } catch (err: any) {
-      setError(err.message || 'লগইন ব্যর্থ হয়েছে');
+      const res = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password })
+      });
+      if (res.ok) {
+        router.push('/');
+      } else {
+        const data = await res.json();
+        setError(data.error || 'লগইন ব্যর্থ হয়েছে');
+      }
+    } catch {
+      setError('লগইন ব্যর্থ হয়েছে');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -57,10 +67,12 @@ export default function LoginPage() {
                 <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} className="w-full pl-10 pr-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="পাসওয়ার্ড" required />
               </div>
             </div>
-            <Button type="submit" size="lg" className="w-full" disabled={loading}>{loading ? 'লগইন হচ্ছে...' : 'লগইন করুন'}</Button>
+            <button type="submit" disabled={loading} className="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 disabled:opacity-50">
+              {loading ? 'লগইন হচ্ছে...' : 'লগইন করুন'}
+            </button>
           </form>
           <div className="mt-6 text-center text-sm text-slate-600">
-            <p>এখনো সদস্য নন?{' '}<Link href="/auth/register" className="text-blue-600 hover:text-blue-700 font-semibold">রেজিস্টার করুন</Link></p>
+            <p>এখনো সদস্য নন? <Link href="/auth/register" className="text-blue-600 hover:text-blue-700 font-semibold">রেজিস্টার করুন</Link></p>
           </div>
           <div className="mt-6 pt-6 border-t border-slate-200">
             <Link href="/" className="text-blue-600 hover:text-blue-700 text-sm font-semibold text-center block">&#8592; হোম পেজে ফিরুন</Link>
