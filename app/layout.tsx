@@ -5,13 +5,13 @@ import "./globals.css"
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" })
 
 export const metadata: Metadata = {
-  title: "Daily Income Bazar - Online Shopping & MLM Platform",
-  description: "Daily Income Bazar - Your trusted online shopping destination with exciting MLM earning opportunities.",
-  keywords: "online shopping, MLM, daily income, e-commerce, Bangladesh",
+  title: "Nexus Studio - Creative Digital Agency",
+  description: "Ultra-modern creative digital agency specializing in web design, branding, and digital experiences.",
+  keywords: "creative agency, web design, branding, digital experience",
 }
 
 export const viewport: Viewport = {
-  themeColor: "#2563eb",
+  themeColor: "#0a0e27",
 }
 
 export default function RootLayout({
@@ -20,8 +20,8 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="bn">
-      <body className={`${inter.variable} font-sans antialiased bg-slate-50`}>
+    <html lang="en">
+      <body className={`${inter.variable} font-sans antialiased bg-slate-950 text-slate-50 overflow-x-hidden`}>
         {children}
       </body>
     </html>
