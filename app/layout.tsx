@@ -1,16 +1,20 @@
 import type { Metadata, Viewport } from "next"
 import { Inter } from "next/font/google"
 import "./globals.css"
+import { AuthProvider } from "@/lib/auth-context"
+import { CartProvider } from "@/lib/cart-context"
+import { Toaster } from "@/components/ui/sonner"
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" })
 
 export const metadata: Metadata = {
-  title: "NexusAI - The Future of Artificial Intelligence",
-  description: "Build transformative AI experiences powered by industry-leading models and tools. The fastest and most powerful platform for building AI products.",
+  title: "Daily Income Bazar - Online Shopping & MLM Platform",
+  description: "Daily Income Bazar - Your trusted online shopping destination with exciting MLM earning opportunities. Shop quality products and earn daily income.",
+  keywords: "online shopping, MLM, daily income, e-commerce, Bangladesh",
 }
 
 export const viewport: Viewport = {
-  themeColor: "#0a0a0a",
+  themeColor: "#16a34a",
 }
 
 export default function RootLayout({
@@ -19,9 +23,14 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" className="dark">
+    <html lang="bn">
       <body className={`${inter.variable} font-sans antialiased`}>
-        {children}
+        <AuthProvider>
+          <CartProvider>
+            {children}
+            <Toaster position="top-right" />
+          </CartProvider>
+        </AuthProvider>
       </body>
     </html>
   )
