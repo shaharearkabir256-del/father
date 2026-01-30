@@ -1,5 +1,3 @@
-import { db } from '@/lib/firebase';
-import { collection, getDocs, query, where, limit, addDoc, serverTimestamp } from 'firebase/firestore';
 import { NextResponse } from 'next/server';
 
 // Sample products - will be replaced with Firebase in production
@@ -65,7 +63,6 @@ export async function GET(request: Request) {
     const { searchParams } = new URL(request.url);
     const category = searchParams.get('category');
 
-    // For now, return sample products
     let filtered = sampleProducts;
     
     if (category && category !== 'all') {
